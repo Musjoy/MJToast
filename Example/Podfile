@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'MJToast_Example', :exclusive => true do
+  pod 'MJToast', :path => '../'
+end
+
+target 'MJToast_Tests', :exclusive => true do
+  pod 'MJToast', :path => '../'
+
+  
+end

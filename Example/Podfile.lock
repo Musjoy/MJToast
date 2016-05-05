@@ -1,0 +1,14 @@
+PODS:
+  - MJToast (0.1.0)
+
+DEPENDENCIES:
+  - MJToast (from `../`)
+
+EXTERNAL SOURCES:
+  MJToast:
+    :path: ../
+
+SPEC CHECKSUMS:
+  MJToast: fd10c5f41084d0bd624a8db720914129758702ac
+
+COCOAPODS: 0.39.0

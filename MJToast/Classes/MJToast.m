@@ -8,7 +8,12 @@
 
 #import "MJToast.h"
 #import <QuartzCore/QuartzCore.h>
-
+#if __has_include("BaseViewController.h")
+#import "BaseViewController.h"
+#define THEBaseViewController       BaseViewController
+#else
+#define THEBaseViewController       UIViewController
+#endif
 
 static MJToast *s_mjToast = nil;
 
@@ -53,6 +58,9 @@ static UIInterfaceOrientation lastOrientation;
         s_toastWindows = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
         [s_toastWindows setBackgroundColor:[UIColor clearColor]];
         s_toastWindows.windowLevel = 10000000 + 1;
+        THEBaseViewController *aVC = [[THEBaseViewController alloc] init];
+        aVC.view.hidden = YES;
+        [s_toastWindows setRootViewController:aVC];
         [s_toastWindows setUserInteractionEnabled:NO];
         [s_toastWindows makeKeyAndVisible];
     }
@@ -136,6 +144,15 @@ static UIInterfaceOrientation lastOrientation;
     } else {
         [window addSubview:self.lblToast];
     }
+    CGFloat windowCenterX = window.center.x;
+    CGFloat windowHeight = window.frame.size.height;
+    CGFloat centerX = windowCenterX;
+    CGFloat centerY = windowHeight - DEFAULT_BOTTOM_PADDING;
+    
+    self.lblToast.center = CGPointMake(centerX, centerY);
+    self.lblToast.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin|
+                                      UIViewAutoresizingFlexibleRightMargin|
+                                      UIViewAutoresizingFlexibleTopMargin);
     
     if (_curToastState == 2) {
         [_disappearingTimer invalidate];
@@ -148,62 +165,6 @@ static UIInterfaceOrientation lastOrientation;
     [self.lblToast setAlpha:1];
     self.disappearTimer = [NSTimer scheduledTimerWithTimeInterval:START_DISAPPEAR_SECOND target:self selector:@selector(toastDisappear:) userInfo:nil repeats:NO];
     _curToastState = 1;
-    [self deviceOrientationChange];
-    
-}
-
-- (void)deviceOrientationChange
-{
-    
-    UIWindow *window = [[[UIApplication sharedApplication] windows] objectAtIndex:0];
-//    CGPoint point = window.center;    
-    CGFloat centerX=0, centerY=0;
-    CGFloat windowCenterX = window.center.x;
-    CGFloat windowCenterY = window.center.y;
-    CGFloat windowWidth = window.frame.size.width;
-    CGFloat windowHeight = window.frame.size.height;
-    
-    UIInterfaceOrientation currentOrient= [UIApplication
-                                           sharedApplication].statusBarOrientation;
-    
-    if (currentOrient == UIInterfaceOrientationLandscapeRight) {
-
-        CGAffineTransform rotateTransform   = CGAffineTransformMakeRotation(M_PI/2);
-        _lblToast.transform = CGAffineTransformConcat(window.transform, rotateTransform);
-        centerX = DEFAULT_BOTTOM_PADDING;
-        centerY = windowCenterY;
-        
-    } else if(currentOrient == UIInterfaceOrientationLandscapeLeft) {
-
-        CGAffineTransform rotateTransform;
-        if (lastOrientation == UIInterfaceOrientationPortrait) {
-            rotateTransform   = CGAffineTransformMakeRotation(-M_PI/2);
-        } else {
-            rotateTransform   = CGAffineTransformMakeRotation(M_PI/2);
-        }
-        
-        _lblToast.transform = CGAffineTransformConcat(_lblToast.transform, rotateTransform);
-        centerX = windowWidth - DEFAULT_BOTTOM_PADDING;
-        centerY = windowCenterY;
-        
-    } else if(currentOrient == UIInterfaceOrientationPortraitUpsideDown) {
-
-        lastOrientation = currentOrient;
-        _lblToast.transform = CGAffineTransformRotate(window.transform, -M_PI);
-        
-        centerX = windowCenterX;
-        centerY = DEFAULT_BOTTOM_PADDING;
-        
-    } else if(currentOrient == UIInterfaceOrientationPortrait) {
-
-        lastOrientation = currentOrient;
-        _lblToast.transform = window.transform;
-        centerX = windowCenterX;
-        centerY = windowHeight - DEFAULT_BOTTOM_PADDING;
-        
-    }
-
-    self.lblToast.center = CGPointMake(centerX, centerY);
 }
 
 - (void)toastDisappear:(NSTimer *)timer

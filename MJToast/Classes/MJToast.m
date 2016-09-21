@@ -14,6 +14,12 @@
 #else
 #define THEBaseViewController       UIViewController
 #endif
+#ifdef __has_include("MJWindowRootViewController.h")
+#import "MJWindowRootViewController.h"
+#define THEWindowRootViewController       MJWindowRootViewController
+#else
+#define THEWindowRootViewController       THEBaseViewController
+#endif
 
 static MJToast *s_mjToast = nil;
 
@@ -58,7 +64,7 @@ static UIInterfaceOrientation lastOrientation;
         s_toastWindows = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
         [s_toastWindows setBackgroundColor:[UIColor clearColor]];
         s_toastWindows.windowLevel = 10000000 + 1;
-        THEBaseViewController *aVC = [[THEBaseViewController alloc] init];
+        THEBaseViewController *aVC = [[THEWindowRootViewController alloc] init];
         aVC.view.hidden = YES;
         [s_toastWindows setRootViewController:aVC];
         [s_toastWindows setUserInteractionEnabled:NO];

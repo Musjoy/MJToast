@@ -46,7 +46,7 @@ static float totalTimeCount = 60 * DISAPPEAR_DURATION;
 @property (nonatomic, assign) int curToastState;        // 0:不显示;1:显示;2:正在消失
 @property (nonatomic, assign) float curTimeCount;         // 当前倒计时
 
-+ (MJToast *)shareInstance;
++ (MJToast *)sharedInstance;
 
 - (id)initWithText:(NSString *)text;    
 - (void)deviceOrientationChange;
@@ -73,7 +73,7 @@ static UIInterfaceOrientation lastOrientation;
     return s_toastWindows;
 }
 
-+ (MJToast *)shareInstance
++ (MJToast *)sharedInstance
 {
     if (s_mjToast == nil) {
         s_mjToast = [[MJToast alloc] init];
@@ -119,7 +119,7 @@ static UIInterfaceOrientation lastOrientation;
 
 + (MJToast *)makeToast:(NSString *)text
 {
-    MJToast *aToast = [MJToast shareInstance];
+    MJToast *aToast = [MJToast sharedInstance];
     aToast.strToast = text;
     return aToast;
 }

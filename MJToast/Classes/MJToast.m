@@ -11,11 +11,13 @@
 #if __has_include("BaseViewController.h")
 #import "BaseViewController.h"
 #define THEBaseViewController       BaseViewController
+#elif __has_include(<MJBaseViewController.h>)
+#define THEBaseViewController       MJBaseViewController
 #else
 #define THEBaseViewController       UIViewController
 #endif
-#ifdef __has_include("MJWindowRootViewController.h")
-#import "MJWindowRootViewController.h"
+#if __has_include(<MJWindowRootViewController.h>)
+#import <MJWindowRootViewController.h>
 #define THEWindowRootViewController       MJWindowRootViewController
 #else
 #define THEWindowRootViewController       THEBaseViewController
@@ -49,13 +51,10 @@ static float totalTimeCount = 60 * DISAPPEAR_DURATION;
 + (MJToast *)sharedInstance;
 
 - (id)initWithText:(NSString *)text;    
-- (void)deviceOrientationChange;
 
 @end
 
 @implementation MJToast
-
-static UIInterfaceOrientation lastOrientation; 
 
 
 + (UIWindow *)tostWindow
@@ -64,7 +63,7 @@ static UIInterfaceOrientation lastOrientation;
         s_toastWindows = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
         [s_toastWindows setBackgroundColor:[UIColor clearColor]];
         s_toastWindows.windowLevel = 10000000 + 1;
-        THEBaseViewController *aVC = [[THEWindowRootViewController alloc] init];
+        THEWindowRootViewController *aVC = [[THEWindowRootViewController alloc] init];
         aVC.view.hidden = YES;
         [s_toastWindows setRootViewController:aVC];
         [s_toastWindows setUserInteractionEnabled:NO];

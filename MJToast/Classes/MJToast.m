@@ -11,13 +11,14 @@
 #if __has_include("BaseViewController.h")
 #import "BaseViewController.h"
 #define THEBaseViewController       BaseViewController
-#elif __has_include(<MJBaseViewController.h>)
+#elif __has_include(<MJControllerManager/MJBaseViewController.h>)
+#import <MJControllerManager/MJBaseViewController.h>
 #define THEBaseViewController       MJBaseViewController
 #else
 #define THEBaseViewController       UIViewController
 #endif
-#if __has_include(<MJWindowRootViewController.h>)
-#import <MJWindowRootViewController.h>
+#if __has_include(<MJControllerManager/MJWindowRootViewController.h>)
+#import <MJControllerManager/MJWindowRootViewController.h>
 #define THEWindowRootViewController       MJWindowRootViewController
 #else
 #define THEWindowRootViewController       THEBaseViewController

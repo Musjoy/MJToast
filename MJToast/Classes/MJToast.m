@@ -35,7 +35,7 @@ UIWindow *s_toastWindows = nil;
 
 const CGFloat MJToastTextPadding     = 5;
 const CGFloat MJToastLabelWidth      = 200;
-const CGFloat MJToastLabelHeight     = 60;
+const CGFloat MJToastLabelHeight     = 200;
 
 static float totalTimeCount = 60 * DISAPPEAR_DURATION;
 
@@ -86,7 +86,7 @@ static float totalTimeCount = 60 * DISAPPEAR_DURATION;
         lblPg.layer.cornerRadius = 5;
         lblPg.layer.borderWidth = 0;
         lblPg.layer.masksToBounds = YES;
-        lblPg.numberOfLines = 2;
+        lblPg.numberOfLines = 0;
         lblPg.font = font;
         lblPg.textAlignment = NSTextAlignmentCenter;
         s_mjToast.lblToast = lblPg;
@@ -136,7 +136,7 @@ static float totalTimeCount = 60 * DISAPPEAR_DURATION;
                                            attributes:@{NSFontAttributeName:font}
                                               context:nil].size;
 //    [strToast sizeWithFont:font constrainedToSize:CGSizeMake(MJToastLabelWidth, MJToastLabelHeight)];
-    [_lblToast setFrame:CGRectMake(0, 0, textSize.width + 2 * MJToastTextPadding, textSize.height + 2 * MJToastTextPadding)];
+    [_lblToast setFrame:CGRectMake(0, 0, textSize.width + 4 * MJToastTextPadding, textSize.height + 2 * MJToastTextPadding)];
 
     _lblToast.text = self.strToast;
     
